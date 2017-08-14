@@ -1,0 +1,28 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "chat app one two one with express nodejs mongodb",
+  "main": "'",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "jsonwebtoken": "^7.4.2",
+    "mongoose": "^4.11.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abdul-majid-ashrafi/one-to-one-chat-mongo-with-react.git"
+  },
+  "author": "Majid ashraf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abdul-majid-ashrafi/one-to-one-chat-mongo-with-react/issues"
+  },
+  "homepage": "https://github.com/Abdul-majid-ashrafi/one-to-one-chat-mongo-with-react#readme"
+}
