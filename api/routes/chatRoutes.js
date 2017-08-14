@@ -1,7 +1,7 @@
-module.exports = function (app) {
-	// console.log("APP", app.route, "=======")
-	var messageChat = require('../controllers/chatController')
-	var userHandlers = require('../controllers/userController.js');
+import messageChat from '../controllers/chatController'
+import userHandlers from '../controllers/userController'
+module.exports = (app) => {
+
 
 	// todoList Routes
 	app.route('/chat')
@@ -12,6 +12,8 @@ module.exports = function (app) {
 	// 	.get(todoList.read_a_task)
 	// 	.put(todoList.update_a_task)
 	// 	.delete(todoList.delete_a_task);
+	app.route('/friend/list')
+		.get(userHandlers.loginRequired, userHandlers.allUser)
 
 	app.route('/auth/register')
 		.post(userHandlers.register);

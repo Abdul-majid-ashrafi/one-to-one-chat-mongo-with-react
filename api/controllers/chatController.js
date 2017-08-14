@@ -1,30 +1,26 @@
-var mongoose = require('mongoose'),
-    ChatMessages = mongoose.model('Chat');
+import mongoose from 'mongoose';
+const ChatMessages = mongoose.model('Chat');
 
 
-
-
-exports.do_chat = function (req, res) {
+exports.do_chat = (req, res) => {
     var new_message = new ChatMessages(req.body);
-    // console.log("new_message", new_message)
-    new_message.save(function (err, chat) {
+    new_message.save((err, chat) => {
         if (err)
             res.send(err);
         res.json(chat);
-        // res.json({message :chat.message});        
     });
 };
 
 
 
 
-exports.get_chat_message = function (req, res) {
+exports.get_chat_message = (req, res) => {
     ChatMessages.find({
         'sender': { "$in": [req.headers.sender, req.headers.recepient] },
         'recepient': { "$in": [req.headers.sender, req.headers.recepient] },
     })
         .populate('recepient', 'fullName')
-        .exec(function (err, data) {
+        .exec((err, data) => {
             if (err) {
                 console.log("Error", err)
                 res.send({ message: err });

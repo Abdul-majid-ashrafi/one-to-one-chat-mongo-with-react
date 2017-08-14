@@ -1,13 +1,11 @@
-'use strict';
-
-var mongoose = require('mongoose'),
-  bcrypt = require('bcrypt'),
-  Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+const Schema = mongoose.Schema;
 
 /**
  * User Schema
  */
-var UserSchema = new Schema({
+const UserSchema = new Schema({
   fullName: {
     type: String,
     trim: true,

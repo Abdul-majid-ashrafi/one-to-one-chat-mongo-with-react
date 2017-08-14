@@ -1,11 +1,14 @@
-var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 3000,
-  mongoose = require('mongoose'),
-  Chat = require('./api/models/chatModel'),
-  User = require('./api/models/userModel'),
-  bodyParser = require('body-parser'),
-  jsonwebtoken = require("jsonwebtoken");
+import express from 'express';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import jsonwebtoken from 'jsonwebtoken';
+
+import Chat from './api/models/chatModel'
+import User from './api/models/userModel'
+
+const port = process.env.PORT || 3000
+const app = express();
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://addmin:addmin@ds059185.mongolab.com:59185/salesmanapp', {
@@ -16,9 +19,9 @@ mongoose.connect('mongodb://addmin:addmin@ds059185.mongolab.com:59185/salesmanap
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   if (req.headers && req.headers.token) {
-    jsonwebtoken.verify(req.headers.token, 'RESTFULAPIs', function (err, decode) {
+    jsonwebtoken.verify(req.headers.token, 'RESTFULAPIs', (err, decode) => {
       if (err) {
         req.user = undefined;
         res.status(404).send({ message: "Invalid Token!" })
@@ -36,7 +39,7 @@ app.use(function (req, res, next) {
 var routes = require('./api/routes/chatRoutes');
 routes(app);
 
-app.use(function (req, res) {
+app.use((req, res) => {
   res.status(404).send({ url: req.originalUrl + ' not found' })
 });
 

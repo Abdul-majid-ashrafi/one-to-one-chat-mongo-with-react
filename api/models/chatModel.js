@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
-var MessageSchema = new Schema({
+const MessageSchema = new Schema({
     dateCreated: {
         type: Date,
         default: Date.now()
@@ -21,6 +21,5 @@ var MessageSchema = new Schema({
 });
 
 
-module.exports = mongoose.model('Chat', MessageSchema);
+mongoose.model('Chat', MessageSchema);
 
-  
