@@ -2,7 +2,7 @@
   "name": "chat",
   "version": "1.0.0",
   "description": "chat app one two one with express nodejs mongodb",
-  "main": "'",
+  "main": "node server.js",
   "dependencies": {
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
