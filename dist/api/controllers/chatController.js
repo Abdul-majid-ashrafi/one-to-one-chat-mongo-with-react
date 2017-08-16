@@ -9,10 +9,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var ChatMessages = _mongoose2.default.model('Chat');
 
 exports.do_chat = function (req, res) {
+    // console.log("===========", req.body)
     var new_message = new ChatMessages(req.body);
     new_message.save(function (err, chat) {
-        if (err) res.send(err);
-        res.json(chat);
+        if (err) {
+            return res.status(400).send({
+                message: err
+            });
+        } else {
+            return res.json(chat);
+        }
     });
 };
 
@@ -22,10 +28,10 @@ exports.get_chat_message = function (req, res) {
         'recepient': { "$in": [req.headers.sender, req.headers.recepient] }
     }).populate('recepient', 'fullName').exec(function (err, data) {
         if (err) {
-            console.log("Error", err);
+            // console.log("Error", err)
             res.send({ message: err });
         } else {
-            console.log("Yahoooooooo", data);
+            // console.log("Yahoooooooo", data)
             res.json({ message: data });
         }
     });

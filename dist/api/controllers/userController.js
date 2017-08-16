@@ -36,12 +36,9 @@ exports.sign_in = function (req, res) {
     email: req.body.email
   }, function (err, user) {
     if (!err) {
-      console.log("1");
       if (!user || !user.comparePassword(req.body.password)) {
-        console.log("2");
         return res.status(401).json({ message: 'Authentication failed. Invalid user or password.' });
       } else {
-        console.log("3");
         user.hash_password = undefined;
         return res.send({ token: _jsonwebtoken2.default.sign({ email: user.email, fullName: user.fullName, _id: user._id }, 'RESTFULAPIs'), message: user });
       }
@@ -60,7 +57,7 @@ exports.loginRequired = function (req, res, next) {
 };
 
 exports.allUser = function (req, res) {
-  User.find({}).select('fullName , email , _id , created').exec(function (err, user) {
+  User.find({}).nor({ email: req.headers.email }).select('fullName , email , _id , created').exec(function (err, user) {
     if (!err) {
       if (!user) {
         return res.status(401).json({ message: 'Find user failed. Unknown database error.' });

@@ -61,6 +61,7 @@ app.use(function (req, res, next) {
         req.user = undefined;
         res.status(404).send({ message: "Invalid Token!" });
       }
+      // console.log("decode ", decode)
       req.user = decode;
       // console.log("decode in side server.js", decode)
       next();

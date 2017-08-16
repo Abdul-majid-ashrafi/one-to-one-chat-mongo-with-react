@@ -24,12 +24,9 @@ exports.sign_in = (req, res) => {
     email: req.body.email
   }, (err, user) => {
     if (!err) {
-      console.log("1")
       if (!user || !user.comparePassword(req.body.password)) {
-        console.log("2")
         return res.status(401).json({ message: 'Authentication failed. Invalid user or password.' });
       } else {
-        console.log("3")
         user.hash_password = undefined
         return res.send({ token: jwt.sign({ email: user.email, fullName: user.fullName, _id: user._id }, 'RESTFULAPIs'), message: user });
       }
@@ -50,6 +47,7 @@ exports.loginRequired = (req, res, next) => {
 
 exports.allUser = (req, res) => {
   User.find({})
+    .nor({ email: req.headers.email })
     .select('fullName , email , _id , created')
     .exec((err, user) => {
       if (!err) {
