@@ -2,22 +2,33 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import jsonwebtoken from 'jsonwebtoken';
-
+import http from 'http';
 import Chat from './api/models/chatModel'
 import User from './api/models/userModel'
+// var app = require('express')();
+// var http = require('http').Server(app);
 
 const port = process.env.PORT || 4000
 const app = express();
 
-
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'development';
+}
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://addmin:addmin@ds059185.mongolab.com:59185/salesmanapp', {
   useMongoClient: true,
   /* other options */
 });
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+
+// Parsers for POST data
+app.use(bodyParser.json(), function (err, req, res, next) {
+  if (err) {
+    return res.status(500).json({ error: err });
+  }
+  next();
+});
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use((req, res, next) => {
   if (req.headers && req.headers.token) {
@@ -31,7 +42,7 @@ app.use((req, res, next) => {
       next();
     });
   } else {
-    console.log("req.user in side server.js", req.user)
+    // console.log("req.user in side server.js", req.user)
     req.user = undefined;
     next()
   }
@@ -42,8 +53,9 @@ routes(app);
 app.use((req, res) => {
   res.status(404).send({ url: req.originalUrl + ' not found' })
 });
+const server = http.createServer(app);
 
-app.listen(port);
+server.listen(port);
 
 console.log('Chat RESTful API server started on: ' + port);
 

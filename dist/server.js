@@ -16,6 +16,10 @@ var _jsonwebtoken = require('jsonwebtoken');
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
+var _http = require('http');
+
+var _http2 = _interopRequireDefault(_http);
+
 var _chatModel = require('./api/models/chatModel');
 
 var _chatModel2 = _interopRequireDefault(_chatModel);
@@ -26,17 +30,29 @@ var _userModel2 = _interopRequireDefault(_userModel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// var app = require('express')();
+// var http = require('http').Server(app);
+
 var port = process.env.PORT || 4000;
 var app = (0, _express2.default)();
 
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'development';
+}
 _mongoose2.default.Promise = global.Promise;
 _mongoose2.default.connect('mongodb://addmin:addmin@ds059185.mongolab.com:59185/salesmanapp', {
   useMongoClient: true
   /* other options */
 });
 
-app.use(_bodyParser2.default.urlencoded({ extended: true }));
-app.use(_bodyParser2.default.json());
+// Parsers for POST data
+app.use(_bodyParser2.default.json(), function (err, req, res, next) {
+  if (err) {
+    return res.status(500).json({ error: err });
+  }
+  next();
+});
+app.use(_bodyParser2.default.urlencoded({ extended: false }));
 
 app.use(function (req, res, next) {
   if (req.headers && req.headers.token) {
@@ -50,7 +66,7 @@ app.use(function (req, res, next) {
       next();
     });
   } else {
-    console.log("req.user in side server.js", req.user);
+    // console.log("req.user in side server.js", req.user)
     req.user = undefined;
     next();
   }
@@ -61,8 +77,9 @@ routes(app);
 app.use(function (req, res) {
   res.status(404).send({ url: req.originalUrl + ' not found' });
 });
+var server = _http2.default.createServer(app);
 
-app.listen(port);
+server.listen(port);
 
 console.log('Chat RESTful API server started on: ' + port);
 

@@ -2,6 +2,19 @@ import messageChat from '../controllers/chatController'
 import userHandlers from '../controllers/userController'
 module.exports = (app) => {
 
+	const allowCrossDomain = (req, res, next) => {
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+		// intercept OPTIONS method
+		if ('OPTIONS' === req.method) {
+			res.sendStatus(200);
+		} else {
+			next();
+		}
+	};
+	app.use(allowCrossDomain);
+
 
 	// todoList Routes
 	app.route('/chat')

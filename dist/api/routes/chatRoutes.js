@@ -12,6 +12,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 module.exports = function (app) {
 
+	var allowCrossDomain = function allowCrossDomain(req, res, next) {
+		res.header('Access-Control-Allow-Origin', '*');
+		res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+		res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+		// intercept OPTIONS method
+		if ('OPTIONS' === req.method) {
+			res.sendStatus(200);
+		} else {
+			next();
+		}
+	};
+	app.use(allowCrossDomain);
+
 	// todoList Routes
 	app.route('/chat').get(_userController2.default.loginRequired, _chatController2.default.get_chat_message).post(_userController2.default.loginRequired, _chatController2.default.do_chat);
 
